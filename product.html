@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artiq Prints | Product</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="rotating-banner" class="rotating-banner"></div>
+  <header id="site-header"></header>
+
+  <main class="product-page">
+    <section class="product">
+      <div class="product__gallery" data-product-gallery>
+        <div class="product__image-frame">
+          <button class="gallery-nav gallery-nav--prev" aria-label="Previous image" data-gallery-prev>&lsaquo;</button>
+          <div class="product__image" data-main-image role="img" aria-label="Artwork preview"></div>
+          <button class="gallery-nav gallery-nav--next" aria-label="Next image" data-gallery-next>&rsaquo;</button>
+          <button class="zoom-toggle" data-zoom-toggle>🔍</button>
+        </div>
+        <div class="product__thumbnails" data-thumbnails></div>
+      </div>
+      <div class="product__details">
+        <h1 data-product-title>Artwork Title</h1>
+        <p class="product__price" data-product-price>£23.95 - £200.00</p>
+        <ul class="product__badges">
+          <li>✓ UK delivery in 3 - 4 working days</li>
+        </ul>
+        <form class="product__form" data-product-form>
+          <label for="frame-options">Framing Options</label>
+          <select id="frame-options" name="frame" data-frame-select></select>
+
+          <label for="size-options">Print Size</label>
+          <select id="size-options" name="size" data-size-select></select>
+
+          <button type="submit" class="btn btn--primary product__add">Add to Basket</button>
+        </form>
+        <div class="product__description" data-product-description>
+          <h2>About this print</h2>
+          <ul>
+            <li>Feature a….</li>
+            <li>Feature b….</li>
+            <li>Feature c….</li>
+            <li>Feature d….</li>
+            <li>Feature e….</li>
+            <li>Feature f….</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section recommendations">
+      <h2 class="section__title">Images you may also like…</h2>
+      <div class="carousel" data-carousel="related"></div>
+    </section>
+
+    <section class="section testimonials" id="testimonials"></section>
+
+    <section class="section recently-viewed">
+      <h2 class="section__title">Recently viewed pieces</h2>
+      <div class="carousel" data-carousel="recent" data-hide-price="true"></div>
+    </section>
+
+    <section class="section newsletter newsletter--dark">
+      <div class="newsletter__content">
+        <h2>Subscribe to the Artiq Insider</h2>
+        <p>Receive studio updates and 10% off your next order.</p>
+        <form class="newsletter__form" data-discount-form>
+          <label class="sr-only" for="product-newsletter">Email address</label>
+          <input id="product-newsletter" name="email" type="email" placeholder="Enter your email" required />
+          <button type="submit" class="btn btn--light">Subscribe</button>
+        </form>
+        <p class="newsletter__legal">By subscribing you agree to our <a href="#">privacy policy</a>.</p>
+        <p class="newsletter__feedback" data-feedback hidden></p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/components.js"></script>
+  <script src="assets/js/product.js"></script>
+</body>
+</html>
