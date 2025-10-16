@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artiq Prints | Curated Print-on-Demand Art</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="rotating-banner" class="rotating-banner"></div>
+  <header id="site-header"></header>
+  <main>
+    <section class="hero">
+      <div class="hero__content">
+        <h1>Curated Prints for Every Wall</h1>
+        <p>Discover premium print-on-demand art thoughtfully curated to match every aesthetic, room, and budget.</p>
+        <a class="btn btn--primary" href="category.html?category=featured">Shop Now</a>
+      </div>
+      <div class="hero__media image-placeholder image-placeholder--cover" aria-hidden="true"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section__title">Popular Right Now</h2>
+      <div class="carousel" data-carousel="popular"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section__title">Main Categories</h2>
+      <div class="category-grid category-grid--main" id="main-categories"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section__title">Niche Categories</h2>
+      <div class="category-grid category-grid--niche" id="niche-categories"></div>
+    </section>
+
+    <section class="section about">
+      <div class="about__card">
+        <h2>About Artiq Prints</h2>
+        <p>
+          Artiq Prints connects independent artists with discerning collectors through a seamless print-on-demand experience. Our curated collections span multiple styles, rooms, and budgets—each piece produced sustainably and shipped globally in partnership with Printify.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section__title">New Releases</h2>
+      <div class="carousel" data-carousel="new"></div>
+    </section>
+
+    <section class="section testimonials" id="testimonials"></section>
+
+    <section class="section selling-points">
+      <div class="selling-points__grid">
+        <article>
+          <h3>Premium Print Quality</h3>
+          <p>Archival inks and museum-grade papers selected to enhance every artwork.</p>
+        </article>
+        <article>
+          <h3>Printify Fulfilment</h3>
+          <p>Automated production and worldwide delivery with real-time tracking.</p>
+        </article>
+        <article>
+          <h3>Flexible Framing</h3>
+          <p>Choose from six bespoke framing finishes tailored to your room.</p>
+        </article>
+        <article>
+          <h3>Collector Support</h3>
+          <p>Dedicated art advisors available via live chat, email, or phone.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section contact">
+      <div class="contact__details">
+        <h2>Contact Us</h2>
+        <p>Email: <a href="mailto:hello@artiqprints.com">hello@artiqprints.com</a></p>
+        <p>Phone: <a href="tel:+441234567890">+44 1234 567 890</a></p>
+      </div>
+    </section>
+
+    <section class="section newsletter newsletter--dark">
+      <div class="newsletter__content">
+        <h2>Subscribe to the Artiq Insider</h2>
+        <p>Join the collector community and receive 10% off your first order.</p>
+        <form class="newsletter__form" data-discount-form>
+          <label class="sr-only" for="newsletter-email">Email address</label>
+          <input id="newsletter-email" name="email" type="email" placeholder="Enter your email" required />
+          <button type="submit" class="btn btn--light">Subscribe</button>
+        </form>
+        <p class="newsletter__legal">By subscribing you agree to our <a href="#">privacy policy</a>.</p>
+        <p class="newsletter__feedback" data-feedback hidden></p>
+      </div>
+    </section>
+  </main>
+  <footer id="site-footer"></footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/components.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
