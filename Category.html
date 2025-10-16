@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artiq Prints | Category</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="rotating-banner" class="rotating-banner"></div>
+  <header id="site-header"></header>
+  <main class="category-page">
+    <section class="category-page__intro">
+      <h1 data-category-title>Category Title</h1>
+      <p data-category-description>
+        Explore our curated selection of prints tailored to this category. Each artwork is produced on demand and ships worldwide in partnership with Printify.
+      </p>
+    </section>
+    <section class="category-page__toolbar">
+      <div class="category-page__sort">
+        <label for="sort-select">Sort By:</label>
+        <select id="sort-select" data-sort-select>
+          <option value="newest">Newest</option>
+          <option value="bestselling">Best Selling</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+        </select>
+      </div>
+    </section>
+    <section class="category-page__grid" data-category-grid></section>
+  </main>
+
+  <section class="section testimonials" id="testimonials"></section>
+
+  <section class="section newsletter newsletter--dark">
+    <div class="newsletter__content">
+      <h2>Subscribe to the Artiq Insider</h2>
+      <p>Get early access to drops and 10% off your first order.</p>
+      <form class="newsletter__form" data-discount-form>
+        <label class="sr-only" for="category-newsletter">Email address</label>
+        <input id="category-newsletter" name="email" type="email" placeholder="Enter your email" required />
+        <button type="submit" class="btn btn--light">Subscribe</button>
+      </form>
+      <p class="newsletter__legal">By subscribing you agree to our <a href="#">privacy policy</a>.</p>
+      <p class="newsletter__feedback" data-feedback hidden></p>
+    </div>
+  </section>
+
+  <footer id="site-footer"></footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/components.js"></script>
+  <script src="assets/js/category.js"></script>
+</body>
+</html>
