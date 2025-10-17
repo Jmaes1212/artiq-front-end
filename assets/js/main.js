@@ -34,3 +34,5 @@ function initHomepage() {
 }
 
 document.addEventListener('DOMContentLoaded', initHomepage);
+assets/js/product.js
+New
