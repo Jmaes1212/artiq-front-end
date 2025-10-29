@@ -4,7 +4,13 @@ function renderCategories(container, categories) {
     const card = document.createElement('a');
     card.className = 'category-card image-placeholder';
     card.href = `category.html?category=${category.key}`;
-    card.innerHTML = `<span>${category.title}</span>`;
+    card.innerHTML = `
+      <div class="category-card__overlay"></div>
+      <div class="category-card__content">
+        <span class="category-card__title">${category.title}</span>
+        ${category.description ? `<span class="category-card__subtitle">${category.description}</span>` : ''}
+      </div>
+    `;
     applyPlaceholderImage(card, category.image);
     container.appendChild(card);
   });

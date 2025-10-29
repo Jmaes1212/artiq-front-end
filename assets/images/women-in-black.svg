@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800">
+  <rect width="600" height="800" fill="#fbfaf8"/>
+  <!-- subtle paper texture -->
+  <defs>
+    <linearGradient id="paperTone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#f4f0ec" stop-opacity="0.92"/>
+    </linearGradient>
+  </defs>
+  <rect x="120" y="120" width="360" height="560" rx="22" fill="url(#paperTone)" stroke="#e7e0d8" stroke-width="2"/>
+  <!-- hair -->
+  <path d="M288 238c36-36 108-54 156 4-6 60-48 84-78 90 18 10 42 12 54 10-16 30-56 38-94 22-26-12-38-36-42-58-24 10-46 16-62 16 6-38 14-64 66-84z" fill="#161518"/>
+  <!-- face -->
+  <path d="M330 250c30 0 54 28 54 84s-40 92-76 92c-26 0-62-20-70-68 28-6 50-26 62-52-16 10-32 16-46 18 2-34 34-74 76-74z" fill="#f7ece5"/>
+  <!-- eyeliner -->
+  <path d="M356 318c14-6 34-6 42 8-16 12-34 10-48 2 2-4 4-8 6-10z" fill="#161518"/>
+  <!-- lips -->
+  <path d="M360 360c12 0 22 6 26 12-8 12-24 18-42 18-12 0-22-4-30-10 8-10 26-20 46-20z" fill="#d82232"/>
+  <!-- earring -->
+  <circle cx="414" cy="380" r="18" fill="#d82232"/>
+  <circle cx="414" cy="412" r="12" fill="#c41728"/>
+  <!-- hand and arm -->
+  <path d="M292 432c22 6 38 18 46 32 12 26 6 46-16 62-26 18-66 18-90-12 16-4 34-16 48-32-18 12-36 18-50 18 10-30 26-62 62-68z" fill="#1c1b1e"/>
+  <!-- lipstick and fingers -->
+  <path d="M238 426c18-10 44-18 70-14 6 16 10 34 8 46-22 10-44 8-60 4 12 6 26 8 38 6-12 22-40 36-74 32-18-2-38-12-56-22 24-20 56-38 74-52z" fill="#1b191c"/>
+  <path d="M208 434c8-6 18-10 26-12-2 10-2 22 2 34-10 0-20-4-28-10z" fill="#f2e3db"/>
+  <path d="M200 430c18-14 40-22 60-26 4 4 6 10 6 16-20 6-40 12-56 18-4-2-8-4-10-8z" fill="#f2e3db"/>
+  <!-- lipstick tip -->
+  <path d="M204 430c-8-8-10-16-2-24 18-4 36-8 52-12 4 4 8 8 10 12-18 6-38 16-60 24z" fill="#d82232"/>
+  <path d="M268 404c10-8 22-12 32-12 18 0 40 16 54 44 20 40 22 96-4 138-46 20-92 12-132-16-22-16-36-38-42-58 26-12 62-36 80-72-14 16-32 28-48 34-2-30 10-58 60-58z" fill="#141217"/>
+  <!-- shoulder and dress -->
+  <path d="M270 480c48-18 128-54 182-18 14 56-4 104-48 138-46 36-110 42-156 12-36-22-56-58-56-102 0-14 2-26 4-36 22 14 46 14 74 6z" fill="#0f0e11"/>
+  <!-- fingers & lipstick outline -->
+  <path d="M190 424c-10 10-10 22 2 32 12 10 30 12 44 8" fill="none" stroke="#111015" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M298 340c-10 18-28 32-52 38" fill="none" stroke="#111015" stroke-width="6" stroke-linecap="round"/>
+  <path d="M206 428c22-12 46-20 68-24" fill="none" stroke="#1a1a1d" stroke-width="4" stroke-linecap="round"/>
+  <path d="M366 362c10 4 26 4 40 0" fill="none" stroke="#861020" stroke-width="4" stroke-linecap="round"/>
+  <!-- eye -->
+  <path d="M366 326c10 2 22 0 32-2" fill="none" stroke="#09080a" stroke-width="6" stroke-linecap="round"/>
+</svg>

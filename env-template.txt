@@ -1,0 +1,28 @@
+# Prodigi API Configuration
+# Get your API key from: https://prodigi.com/developers/
+PRODIGI_API_KEY=your_prodigi_api_key_here
+
+# Prodigi API Base URL
+# Use sandbox for testing: https://api.sandbox.prodigi.com/v4.0
+# Use production for live orders: https://api.prodigi.com/v4.0
+PRODIGI_API_BASE=https://api.sandbox.prodigi.com/v4.0
+
+# Prodigi Webhook Secret (optional)
+# Used to verify webhook signatures for order status updates
+PRODIGI_WEBHOOK_SECRET=your_webhook_secret_here
+
+# Stripe Configuration
+# Create a Stripe account and API keys at https://dashboard.stripe.com/apikeys
+STRIPE_SECRET_KEY=your_stripe_secret_key_here
+STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key_here
+
+# Server Configuration
+PORT=4000
+
+# Instructions:
+# 1. Copy this file to .env in the server directory
+# 2. Replace the Prodigi placeholders with your actual Prodigi API details
+# 3. Add your Stripe secret and publishable keys
+# 4. Optionally set PRODIGI_WEBHOOK_SECRET if you want webhook verification
+# 5. Run 'npm install' in the server directory
+# 6. Run 'npm start' to start the server

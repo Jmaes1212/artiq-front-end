@@ -5,7 +5,21 @@ const morgan = require("morgan");
 const dotenv = require("dotenv");
 const crypto = require("crypto");
 
+const path = require("path");
+const dotenv = require("dotenv");
+// Load .env from /server (explicit path so there’s no doubt)
+dotenv.config({ path: path.resolve(__dirname, "..", ".env") });
+
+// DEBUG (safe): prints length, not the key itself
+console.log("Prodigi key length:", (process.env.PRODIGI_API_KEY || "").length);
+console.log("Prodigi base:", process.env.PRODIGI_API_BASE);
+
+
 dotenv.config();
+// DEBUG: show key length & base (does NOT print your key)
+console.log("Prodigi key length:", (process.env.PRODIGI_API_KEY || "").length);
+console.log("Prodigi base:", process.env.PRODIGI_API_BASE);
+
 
 const { buildOrderPayload, submitOrder } = require("./prodigi");
 const { recordOrder, recordWebhook, getOrder } = require("./orders");

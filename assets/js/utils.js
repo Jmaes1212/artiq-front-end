@@ -1,5 +1,23 @@
 function applyPlaceholderImage(element, key) {
   if (!element) return;
+  if (typeof key === 'string') {
+    const normalisedKey = key.trim();
+    const isDirectAsset =
+      normalisedKey.startsWith('http://') ||
+      normalisedKey.startsWith('https://') ||
+      normalisedKey.startsWith('/') ||
+      normalisedKey.startsWith('./') ||
+      normalisedKey.startsWith('../') ||
+      normalisedKey.startsWith('assets/');
+
+    if (isDirectAsset) {
+      element.style.backgroundImage = `url(${normalisedKey})`;
+      element.style.backgroundSize = 'cover';
+      element.style.backgroundPosition = 'center';
+      element.style.backgroundRepeat = 'no-repeat';
+      return;
+    }
+  }
   const placeholder = placeholderImages[key] || placeholderImages.abstract;
   if (placeholder.startsWith('linear-gradient') || placeholder.startsWith('radial-gradient')) {
     element.style.backgroundImage = placeholder;
@@ -11,12 +29,50 @@ function applyPlaceholderImage(element, key) {
 function renderProductCard(product, { hidePrice = false } = {}) {
   const card = document.createElement('article');
   card.className = 'product-card';
+
+  const resolveStartingPrice = () => {
+    if (product.priceOverrides && typeof product.priceOverrides === 'object') {
+      const overrideValues = Object.values(product.priceOverrides).filter(
+        (value) => typeof value === 'number' && !Number.isNaN(value)
+      );
+      if (overrideValues.length) {
+        return Math.min(...overrideValues);
+      }
+    }
+    if (typeof PRODIGI_SIZE_OPTIONS !== 'undefined' && PRODIGI_SIZE_OPTIONS.length > 0) {
+      const firstSize = PRODIGI_SIZE_OPTIONS[0];
+      const mappedPrice =
+        typeof PRODIGI_VARIANT_PRICE_MAP !== 'undefined'
+          ? PRODIGI_VARIANT_PRICE_MAP[firstSize]
+          : undefined;
+      if (typeof mappedPrice === 'number' && !Number.isNaN(mappedPrice)) {
+        return mappedPrice;
+      }
+    }
+    if (typeof PRODIGI_MIN_VARIANT_PRICE === 'number') {
+      return PRODIGI_MIN_VARIANT_PRICE;
+    }
+    if (typeof product.price === 'number') {
+      return product.price;
+    }
+    if (typeof product.basePrice === 'number') {
+      return product.basePrice;
+    }
+    return undefined;
+  };
+
+  const startingPrice = resolveStartingPrice();
+  const priceHtml =
+    hidePrice || typeof startingPrice !== 'number' || Number.isNaN(startingPrice)
+      ? ''
+      : `<p class="product-card__price">From &pound;${startingPrice.toFixed(2)}</p>`;
+
   card.innerHTML = `
     <a href="product.html?id=${product.id}" class="product-card__link">
       <div class="product-card__media image-placeholder"></div>
       <div class="product-card__info">
         <h3>${product.title}</h3>
-        ${hidePrice ? '' : `<p class="product-card__price">£${product.price.toFixed(2)}</p>`}
+        ${priceHtml}
       </div>
     </a>
   `;

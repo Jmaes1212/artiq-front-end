@@ -29,10 +29,35 @@ function buildCategoryPage() {
       : 'Our featured collection showcases the latest releases and community favourites.';
   }
 
+  const getProductPriceValue = (product) => {
+    if (typeof PRODIGI_SIZE_OPTIONS !== 'undefined' && PRODIGI_SIZE_OPTIONS.length > 0) {
+      const firstSize = PRODIGI_SIZE_OPTIONS[0];
+      const mappedPrice =
+        typeof PRODIGI_VARIANT_PRICE_MAP !== 'undefined'
+          ? PRODIGI_VARIANT_PRICE_MAP[firstSize]
+          : undefined;
+      if (typeof mappedPrice === 'number' && !Number.isNaN(mappedPrice)) {
+        return mappedPrice;
+      }
+    }
+    if (typeof PRODIGI_MIN_VARIANT_PRICE === 'number') {
+      return PRODIGI_MIN_VARIANT_PRICE;
+    }
+    if (typeof product?.price === 'number') {
+      return product.price;
+    }
+    return typeof product?.basePrice === 'number' ? product.basePrice : 0;
+  };
+
   function renderProducts(products) {
     if (!gridEl) return;
     gridEl.innerHTML = '';
     products.forEach((product) => {
+      const priceValue = getProductPriceValue(product);
+      const priceText =
+        typeof priceValue === 'number' && !Number.isNaN(priceValue)
+          ? `&pound;${priceValue.toFixed(2)}`
+          : 'Price on request';
       const card = document.createElement('article');
       card.className = 'category-product image-placeholder';
       card.innerHTML = `
@@ -40,7 +65,7 @@ function buildCategoryPage() {
           <div class="category-product__media"></div>
           <div class="category-product__info">
             <h3>${product.title}</h3>
-            <p class="category-product__price">£${product.price.toFixed(2)}</p>
+            <p class="category-product__price">${priceText}</p>
           </div>
         </a>
       `;
@@ -60,9 +85,9 @@ function buildCategoryPage() {
       case 'bestselling':
         return products.reverse();
       case 'price-asc':
-        return products.sort((a, b) => a.price - b.price);
+        return products.sort((a, b) => getProductPriceValue(a) - getProductPriceValue(b));
       case 'price-desc':
-        return products.sort((a, b) => b.price - a.price);
+        return products.sort((a, b) => getProductPriceValue(b) - getProductPriceValue(a));
       case 'newest':
       default:
         return products;
@@ -82,3 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
   buildCategoryPage();
   setupDiscountForms();
 });
+
+
+

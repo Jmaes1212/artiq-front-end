@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+const PRODUCT_IMAGE = {
+  'women-in-black': '/images/prints/womaninblack.jpg'
+};
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Women in Black – Product</title>
+<style>
+  :root { --gap: clamp(12px, 2vw, 24px); }
+  body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#111; background:#fafafa; }
+  .wrap { max-width: 1200px; margin:0 auto; padding: var(--gap); }
+
+  .grid {
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: var(--gap);
+  }
+  @media (min-width: 860px) {
+    .grid { grid-template-columns: 1.1fr .9fr; align-items:start; }
+  }
+
+  /* Wall + canvas area */
+  .wall {
+    position: relative;
+    border-radius: 12px;
+    padding: clamp(10px, 2vw, 28px);
+    background:
+      radial-gradient(1400px 700px at 30% 0%, rgba(255,255,255,.95), rgba(255,255,255,.55) 40%, rgba(236,236,236,.7)),
+      linear-gradient(180deg, #f3f4f6 0%, #e9ebee 100%);
+@@ -107,61 +103,60 @@ const PRODUCT_IMAGE = {
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+  (() => {
+    // --- Map product id -> image path the browser can load ---
+    const PRODUCT_IMAGE = {
+      'women-in-black': '/images/prints/womaninblack.jpg' // change if your path differs
+    };
+    const DEFAULT_PRODUCT_ID = 'women-in-black';
+
+    // --- Read product id from URL ---
+    const id = new URLSearchParams(location.search).get('id') || DEFAULT_PRODUCT_ID;
+    const PRINT_SRC = PRODUCT_IMAGE[id] || PRODUCT_IMAGE[DEFAULT_PRODUCT_ID];
+
+    // --- Elements ---
+    const canvas = document.getElementById('framePreview');
+    const ctx = canvas.getContext('2d', { alpha: true });
+    const colorSelect =
+      document.getElementById('frameColor') ||
+      document.querySelector('select[data-role="frame-color"]');
+
+    // --- Look & proportions ---
+    const MAT_RATIO   = 0.10; // 10% mat (mount) around the art
+    const MAT_RATIO   = 0.08; // slimmer mat (liner) around the art
+    const FRAME_RATIO = 0.06; // 6% of art width for frame
+    const SHADOW_BLUR = 40;
+    const matColor = '#ffffff';
+
+    const frameStyles = {
+      black:  { base:'#121212', highlight:'#3b3b3b', lowlight:'#000000', grain:'none'   },
+      white:  { base:'#f5f5f5', highlight:'#ffffff', lowlight:'#d8d8d8', grain:'none'   },
+      oak:    { base:'#c99b52', highlight:'#eecb8a', lowlight:'#8a5f2b', grain:'oak'    },
+      walnut: { base:'#6b4526', highlight:'#8f6747', lowlight:'#3e2312', grain:'walnut' },
+      gold:   { base:'#c6a64f', highlight:'#f0e2a2', lowlight:'#8f7a3c', grain:'metal'  },
+      black:  { base:'#121212', highlight:'#3b3b3b', lowlight:'#000000', grain:'none',   liner:'#1d1d1d' },
+      white:  { base:'#f5f5f5', highlight:'#ffffff', lowlight:'#d8d8d8', grain:'none',   liner:'#e2e2e2' },
+      oak:    { base:'#c99b52', highlight:'#eecb8a', lowlight:'#8a5f2b', grain:'oak',    liner:'#d7b57a' },
+      walnut: { base:'#6b4526', highlight:'#8f6747', lowlight:'#3e2312', grain:'walnut', liner:'#7a5130' },
+      gold:   { base:'#c6a64f', highlight:'#f0e2a2', lowlight:'#8f7a3c', grain:'metal',  liner:'#d8c378' },
+    };
+
+    // --- Load the print image ---
+    const artImg = new Image();
+    artImg.src = PRINT_SRC;
+    artImg.decoding = 'async';
+    artImg.onload = () => {
+      const ratio = artImg.width / artImg.height;
+      resizeCanvas(ratio);
+      draw();
+      window.addEventListener('resize', () => { resizeCanvas(ratio); draw(); });
+    };
+    artImg.onerror = () => console.warn('Failed to load image at', PRINT_SRC);
+
+    // Re-draw when frame colour changes
+    if (colorSelect) colorSelect.addEventListener('change', draw);
+
+    // --- Drawing functions ---
+    function resizeCanvas(imgRatio) {
+      const cssW = canvas.clientWidth;
+      const cssH = Math.round((cssW / (imgRatio || 0.8)) * (1 + 2*FRAME_RATIO + 2*MAT_RATIO));
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(cssW * dpr);
+      canvas.height = Math.floor(cssH * dpr);
+      canvas.style.height = cssH + 'px';
+@@ -171,133 +166,195 @@ const PRODUCT_IMAGE = {
+    function draw() {
+      if (!artImg.complete) return;
+      const chosen = (colorSelect && colorSelect.value) || 'black';
+      const style = frameStyles[chosen] || frameStyles.black;
+
+      const W = canvas.clientWidth, H = canvas.clientHeight;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+
+      // wall shadow & crispness
+      ctx.filter = `drop-shadow(0px ${Math.max(10, H*0.015)}px ${SHADOW_BLUR}px rgba(0,0,0,0.25))`;
+
+      // layout
+      const imgRatio = artImg.width / artImg.height;
+      const innerW = W / (1 + 2*FRAME_RATIO + 2*MAT_RATIO);
+      const innerH = innerW / imgRatio;
+      const matW   = innerW * MAT_RATIO;
+      const frameW = innerW * FRAME_RATIO;
+      const outerW = innerW + 2*(matW + frameW);
+      const outerH = innerH + 2*(matW + frameW);
+      const x0 = (W - outerW)/2, y0 = (H - outerH)/2;
+
+      const outer = { x:x0, y:y0, w:outerW, h:outerH };
+      const inner = { x:x0+frameW, y:y0+frameW, w:outerW-2*frameW, h:outerH-2*frameW };
+
+      // FRAME base
+      roundRect(ctx, outer.x, outer.y, outer.w, outer.h, 6);
+      ctx.fillStyle = style.base; ctx.fill();
+      const outerRadius = Math.min(outer.w, outer.h) * 0.05;
+      const innerRadius = Math.max(outerRadius - frameW * 0.6, 4);
+      const outerPath = createRoundRectPath(outer.x, outer.y, outer.w, outer.h, outerRadius);
+      const innerPath = createRoundRectPath(inner.x, inner.y, inner.w, inner.h, innerRadius);
+      const framePath = new Path2D();
+      framePath.addPath(outerPath);
+      framePath.addPath(innerPath);
+
+      // FRAME base fill
+      ctx.fillStyle = style.base;
+      ctx.fill(outerPath);
+
+      // bevels (light from top-left)
+      const gradTL = ctx.createLinearGradient(inner.x, inner.y, outer.x, outer.y);
+      gradTL.addColorStop(0, rgba(style.highlight, .35));
+      gradTL.addColorStop(1, rgba(style.highlight, 0));
+      ctx.fillStyle = gradTL;
+      ctx.save();
+      ctx.clip(framePath, 'evenodd');
+
+      // Directional sheen across frame surface
+      const diag = ctx.createLinearGradient(outer.x, outer.y, outer.x + outer.w, outer.y + outer.h);
+      diag.addColorStop(0, rgba(style.highlight, .55));
+      diag.addColorStop(0.45, rgba(style.base, .08));
+      diag.addColorStop(0.6, rgba(style.lowlight, .45));
+      diag.addColorStop(1, rgba(style.lowlight, .85));
+      ctx.fillStyle = diag;
+      ctx.fillRect(outer.x, outer.y, outer.w, outer.h);
+
+      // inner bevel (shadow + highlight)
+      const innerShadow = ctx.createLinearGradient(inner.x, inner.y, inner.x, inner.y + frameW);
+      innerShadow.addColorStop(0, rgba(style.lowlight, .65));
+      innerShadow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = innerShadow;
+      ctx.fillRect(inner.x, inner.y, inner.w, frameW);
+
+      const innerHighlight = ctx.createLinearGradient(inner.x, inner.y + inner.h, inner.x, inner.y + inner.h - frameW);
+      innerHighlight.addColorStop(0, rgba(style.highlight, .45));
+      innerHighlight.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = innerHighlight;
+      ctx.fillRect(inner.x, inner.y + inner.h - frameW, inner.w, frameW);
+
+      const sideShadow = ctx.createLinearGradient(inner.x, inner.y, inner.x + frameW, inner.y);
+      sideShadow.addColorStop(0, rgba(style.lowlight, .55));
+      sideShadow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = sideShadow;
+      ctx.fillRect(inner.x, inner.y, frameW, inner.h);
+
+      const sideHighlight = ctx.createLinearGradient(inner.x + inner.w, inner.y, inner.x + inner.w - frameW, inner.y);
+      sideHighlight.addColorStop(0, rgba(style.highlight, .4));
+      sideHighlight.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = sideHighlight;
+      ctx.fillRect(inner.x + inner.w - frameW, inner.y, frameW, inner.h);
+
+      // outer lip lighting
+      const outerHighlight = ctx.createLinearGradient(outer.x, outer.y, outer.x, outer.y + frameW);
+      outerHighlight.addColorStop(0, rgba(style.highlight, .6));
+      outerHighlight.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = outerHighlight;
+      ctx.fillRect(outer.x, outer.y, outer.w, frameW);
+      ctx.fillRect(outer.x, outer.y, frameW, outer.h);
+
+      const gradBR = ctx.createLinearGradient(inner.x+inner.w, inner.y+inner.h, outer.x+outer.w, outer.y+outer.h);
+      gradBR.addColorStop(0, rgba(style.lowlight, .35));
+      gradBR.addColorStop(1, rgba(style.lowlight, 0));
+      ctx.fillStyle = gradBR;
+      ctx.fillRect(outer.x, outer.y+outer.h-frameW, outer.w, frameW);
+      ctx.fillRect(outer.x+outer.w-frameW, outer.y, frameW, outer.h);
+      const outerShadow = ctx.createLinearGradient(outer.x, outer.y + outer.h, outer.x, outer.y + outer.h - frameW);
+      outerShadow.addColorStop(0, rgba(style.lowlight, .75));
+      outerShadow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = outerShadow;
+      ctx.fillRect(outer.x, outer.y + outer.h - frameW, outer.w, frameW);
+
+      // grain
+      // grain inside clip
+      addGrain(ctx, outer, frameW, style);
+
+      // inner cut glint
+      const edge = 2;
+      ctx.fillStyle = 'rgba(255,255,255,.25)';
+      ctx.fillRect(inner.x - edge, inner.y - edge, inner.w + 2*edge, edge);
+      ctx.fillRect(inner.x - edge, inner.y + inner.h, inner.w + 2*edge, edge);
+      ctx.fillRect(inner.x - edge, inner.y, edge, inner.h);
+      ctx.fillRect(inner.x + inner.w, inner.y, edge, inner.h);
+      ctx.restore();
+
+      // MAT
+      const matColor = style.liner || '#f3f3f3';
+      const mat = { x:inner.x, y:inner.y, w:inner.w, h:inner.h };
+      roundRect(ctx, mat.x, mat.y, mat.w, mat.h, 4);
+      ctx.fillStyle = '#ffffff'; ctx.fill();
+      const matRadius = Math.max(innerRadius - frameW * 0.35, 3);
+      const matPath = createRoundRectPath(mat.x, mat.y, mat.w, mat.h, matRadius);
+      ctx.fillStyle = matColor;
+      ctx.fill(matPath);
+
+      const matShadow = ctx.createLinearGradient(mat.x, mat.y, mat.x, mat.y + 14);
+      matShadow.addColorStop(0, 'rgba(0,0,0,0.18)');
+      matShadow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = matShadow;
+      ctx.fillRect(mat.x+6, mat.y+6, mat.w-12, 10);
+      ctx.save();
+      ctx.clip(matPath);
+      const matSheen = ctx.createLinearGradient(mat.x, mat.y, mat.x + mat.w, mat.y + mat.h);
+      matSheen.addColorStop(0, rgba(style.highlight, .08));
+      matSheen.addColorStop(1, rgba(style.lowlight, .15));
+      ctx.globalCompositeOperation = 'soft-light';
+      ctx.fillStyle = matSheen;
+      ctx.fillRect(mat.x, mat.y, mat.w, mat.h);
+      ctx.globalCompositeOperation = 'source-over';
+
+      const matInnerShadow = ctx.createLinearGradient(mat.x, mat.y, mat.x, mat.y + matW);
+      matInnerShadow.addColorStop(0, 'rgba(0,0,0,0.18)');
+      matInnerShadow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = matInnerShadow;
+      ctx.fillRect(mat.x + 6, mat.y + 6, mat.w - 12, Math.max(8, matW * 0.6));
+      ctx.restore();
+
+      // ART
+      const artRect = { x: mat.x + matW, y: mat.y + matW, w: mat.w - 2*matW, h: mat.h - 2*matW };
+      const src = coverRect(artImg.width, artImg.height, artRect.w, artRect.h);
+
+      ctx.save();
+      roundRect(ctx, artRect.x, artRect.y, artRect.w, artRect.h, 2);
+      roundRect(ctx, artRect.x, artRect.y, artRect.w, artRect.h, Math.max(2, matRadius - matW));
+      ctx.clip();
+      ctx.drawImage(artImg, src.sx, src.sy, src.sw, src.sh, artRect.x, artRect.y, artRect.w, artRect.h);
+      ctx.restore();
+
+      // subtle glass glare
+      const glare = ctx.createLinearGradient(artRect.x, artRect.y, artRect.x+artRect.w, artRect.y+artRect.h);
+      glare.addColorStop(0, 'rgba(255,255,255,0.06)');
+      glare.addColorStop(0.6, 'rgba(255,255,255,0)');
+      ctx.fillStyle = glare;
+      ctx.fillRect(artRect.x, artRect.y, artRect.w, artRect.h);
+
+      ctx.restore();
+    }
+
+    // helpers
+    function roundRect(ctx, x, y, w, h, r) {
+      r = Math.min(r, w/2, h/2);
+      const radius = Math.min(r, w / 2, h / 2);
+      ctx.beginPath();
+      ctx.moveTo(x+r, y);
+      ctx.arcTo(x+w, y, x+w, y+h, r);
+      ctx.arcTo(x+w, y+h, x, y+h, r);
+      ctx.arcTo(x, y+h, x, y, r);
+      ctx.arcTo(x, y, x+w, y, r);
+      ctx.moveTo(x + radius, y);
+      ctx.arcTo(x + w, y, x + w, y + h, radius);
+      ctx.arcTo(x + w, y + h, x, y + h, radius);
+      ctx.arcTo(x, y + h, x, y, radius);
+      ctx.arcTo(x, y, x + w, y, radius);
+      ctx.closePath();
+    }
+    function coverRect(sw, sh, dw, dh) {
+      const sr = sw/sh, dr = dw/dh;
+      let sx=0, sy=0, sw2=sw, sh2=sh;
+      if (sr > dr) { sw2 = sh*dr; sx = (sw - sw2)/2; }
+      else { sh2 = sw/dr; sy = (sh - sh2)/2; }
+      return { sx, sy, sw: sw2, sh: sh2 };
+    }
+    function rgba(hex, a) {
+      if (hex.length === 4) {
+        const r = parseInt(hex[1]+hex[1],16), g = parseInt(hex[2]+hex[2],16), b = parseInt(hex[3]+hex[3],16);
+        return `rgba(${r},${g},${b},${a})`;
+      }
+      const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+      return `rgba(${r},${g},${b},${a})`;
+    }
+    function createRoundRectPath(x, y, w, h, r) {
+      const path = new Path2D();
+      let radius = Math.min(r, w / 2, h / 2);
+      path.moveTo(x + radius, y);
+      path.arcTo(x + w, y, x + w, y + h, radius);
+      path.arcTo(x + w, y + h, x, y + h, radius);
+      path.arcTo(x, y + h, x, y, radius);
+      path.arcTo(x, y, x + w, y, radius);
+      path.closePath();
+      return path;
+    }
+    function addGrain(ctx, outer, frameW, style) {
+      if (style.grain === 'none') return;
+      const { x, y, w, h } = outer;
+      const lines = Math.max(20, Math.floor((w+h)/30));
+      ctx.save();
+      ctx.globalAlpha = 0.07;
+      ctx.beginPath();
+      for (let i=0; i<lines; i++) {
+        const yy = y + (h * i / lines);
+        ctx.moveTo(x + frameW*0.35, yy);
+        ctx.lineTo(x + w - frameW*0.35, yy + Math.sin(i*0.6)*2);
+      }
+      ctx.lineWidth = style.grain === 'metal' ? 0.7 : 1.1;
+      ctx.strokeStyle = style.grain === 'metal' ? '#ffffff' : '#2b1a0d';
+      ctx.stroke();
+      ctx.restore();
+    }
+  })();
+  </script>
+</body>
+</html>

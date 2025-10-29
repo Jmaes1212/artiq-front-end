@@ -13,13 +13,14 @@
   <div id="rotating-banner" class="rotating-banner"></div>
   <header id="site-header"></header>
   <main>
-    <section class="hero">
+    <section class="hero hero--cover">
+      <div class="hero__overlay" aria-hidden="true"></div>
       <div class="hero__content">
-        <h1>Curated Prints for Every Wall</h1>
-        <p>Discover premium print-on-demand art thoughtfully curated to match every aesthetic, room, and budget.</p>
-        <a class="btn btn--primary" href="category.html?category=featured">Shop Now</a>
+        <span class="hero__eyebrow">New Season Collection</span>
+        <h1>Elevate Your Space with Curated Art</h1>
+        <p>Explore statement pieces, limited editions, and bespoke framing crafted to transform your favourite rooms.</p>
+        <a class="btn btn--primary" href="category.html?category=abstract">Shop Now</a>
       </div>
-      <div class="hero__media image-placeholder image-placeholder--cover" aria-hidden="true"></div>
     </section>
 
     <section class="section">
@@ -27,23 +28,24 @@
       <div class="carousel" data-carousel="popular"></div>
     </section>
 
-    <section class="section">
+    <section class="section section--compact">
       <h2 class="section__title">Main Categories</h2>
       <div class="category-grid category-grid--main" id="main-categories"></div>
+    </section>
+
+    <section class="section about">
+      <div class="about__card">
+        <h2 class="about__title">Buy wall art online!</h2>
+        <p class="about__copy"><strong>Artiq Prints</strong> is an online platform specialized in home decor that sells <strong>wall art and posters</strong>. We address ourselves to everybody who wants to get a special touch to their decor homes. Decorating the bedroom, filling the kitchen walls with colours, making the living room wall decor more welcoming or just creating a unique corner at your home, everything is possible with our posters! And remember, we have different sizes and <strong>printing supports</strong> for our <strong>contemporary art prints</strong>.</p>
+        <p class="about__copy">This is the right place to get inspiration and wall decor ideas. Our modern posters categories are designed to be hanged individually or in group because they fit perfectly with each other. Among these collections you will find original <strong>Scandinavian wall art</strong>, landscape pictures, breathless fine art photography, minimalist posters, graphic design prints and illustrations among many others!</p>
+        <p class="about__copy">Our aim is to share with everybody the artwork of <strong>talented designers, photographers and illustrators</strong>, either emerging or well-known. This is why Artesta makes every effort to offer all our posters, regardless size or printing support, at an affordable price for everybody without sacrificing the maximum quality of all materials. Additionally, we are committed to empower the artists and authors of the work, they are key elements in this project.</p>
+        <p class="about__copy"><strong>What are you waiting for?</strong> Take a look here and do not hesitate to contact us if you have any questions!</p>
+      </div>
     </section>
 
     <section class="section">
       <h2 class="section__title">Niche Categories</h2>
       <div class="category-grid category-grid--niche" id="niche-categories"></div>
-    </section>
-
-    <section class="section about">
-      <div class="about__card">
-        <h2>About Artiq Prints</h2>
-        <p>
-          Artiq Prints connects independent artists with discerning collectors through a seamless print-on-demand experience. Our curated collections span multiple styles, rooms, and budgets—each piece produced sustainably and shipped globally in partnership with Printify.
-        </p>
-      </div>
     </section>
 
     <section class="section">
@@ -101,6 +103,8 @@
   <script src="assets/js/data.js"></script>
   <script src="assets/js/utils.js"></script>
   <script src="assets/js/components.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="assets/js/cart.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

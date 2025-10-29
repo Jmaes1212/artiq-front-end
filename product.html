@@ -16,13 +16,20 @@
   <main class="product-page">
     <section class="product">
       <div class="product__gallery" data-product-gallery>
-        <div class="product__image-frame">
-          <button class="gallery-nav gallery-nav--prev" aria-label="Previous image" data-gallery-prev>&lsaquo;</button>
-          <div class="product__image" data-main-image role="img" aria-label="Artwork preview"></div>
-          <button class="gallery-nav gallery-nav--next" aria-label="Next image" data-gallery-next>&rsaquo;</button>
-          <button class="zoom-toggle" data-zoom-toggle>🔍</button>
-        </div>
-        <div class="product__thumbnails" data-thumbnails></div>
+        <section class="wall-scene" aria-label="Framed artwork preview scene">
+          <div class="room">
+            <div class="wall">
+              <canvas id="framePreview" aria-label="Framed artwork preview"></canvas>
+            </div>
+            <div class="skirting"></div>
+            <div class="floor"></div>
+          </div>
+        </section>
+
+        <section aria-label="Frame colour gallery" class="frame-gallery">
+          <h3 class="gallery-title">Frame colours</h3>
+          <div id="frameGallery" class="gallery-grid"></div>
+        </section>
       </div>
       <div class="product__details">
         <h1 data-product-title>Artwork Title</h1>
@@ -82,9 +89,11 @@
 
   <footer id="site-footer"></footer>
 
+  <script src="https://js.stripe.com/v3/"></script>
   <script src="assets/js/data.js"></script>
   <script src="assets/js/utils.js"></script>
   <script src="assets/js/components.js"></script>
+  <script src="assets/js/cart.js"></script>
   <script src="assets/js/product.js"></script>
 </body>
 </html>

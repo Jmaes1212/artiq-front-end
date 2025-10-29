@@ -17,9 +17,186 @@ function createFramedArtwork({
   return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }
 
+const PRODIGI_FRAMES = [
+  { key: "black", label: "Matte Black", priceMultiplier: 1 },
+  { key: "white", label: "Gallery White", priceMultiplier: 1 },
+  { key: "natural", label: "Natural Wood", priceMultiplier: 1 }
+];
+
+function createWallMockup({
+  idSuffix = "default",
+  wallTop = "#f3f0ec",
+  wallBottom = "#e6dbcf",
+  floor = "#d1c0af",
+  baseboard = "#efe6dc",
+  rug = "#ded3c4",
+  frameLight = "#c7a26d",
+  frameDark = "#7b5b33",
+  frameAccent = "#e2bf85",
+  mat = "#fbf7f1",
+  artBackground = "#ffffff",
+  detail = ""
+} = {}) {
+  const wallGradientId = `wallGradient-${idSuffix}`;
+  const rugGradientId = `rugGradient-${idSuffix}`;
+  const frameGradientId = `frameGradient-${idSuffix}`;
+  const frameStrokeId = `frameStroke-${idSuffix}`;
+  const shadowId = `frameShadow-${idSuffix}`;
+
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800">
+      <defs>
+        <linearGradient id="${wallGradientId}" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="${wallTop}" />
+          <stop offset="1" stop-color="${wallBottom}" />
+        </linearGradient>
+        <linearGradient id="${rugGradientId}" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="${rug}" stop-opacity="0.75" />
+          <stop offset="1" stop-color="${floor}" stop-opacity="0.95" />
+        </linearGradient>
+        <linearGradient id="${frameGradientId}" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="${frameLight}" />
+          <stop offset="0.5" stop-color="${frameAccent}" />
+          <stop offset="1" stop-color="${frameDark}" />
+        </linearGradient>
+        <linearGradient id="${frameStrokeId}" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="${frameDark}" stop-opacity="0.9" />
+          <stop offset="0.45" stop-color="${frameAccent}" stop-opacity="0.45" />
+          <stop offset="1" stop-color="${frameLight}" stop-opacity="0.9" />
+        </linearGradient>
+        <filter id="${shadowId}" x="-10%" y="-10%" width="120%" height="130%">
+          <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="rgba(0,0,0,0.28)" />
+        </filter>
+      </defs>
+
+      <rect width="600" height="520" fill="url(#${wallGradientId})" />
+      <rect y="520" width="600" height="280" fill="${floor}" />
+      <rect y="500" width="600" height="20" fill="${baseboard}" />
+      <ellipse cx="300" cy="640" rx="220" ry="70" fill="url(#${rugGradientId})" opacity="0.55" />
+
+      <g filter="url(#${shadowId})">
+        <rect x="96" y="118" width="408" height="564" rx="32" fill="url(#${frameGradientId})" />
+        <rect x="108" y="130" width="384" height="540" rx="26" fill="none" stroke="url(#${frameStrokeId})" stroke-width="6" />
+        <rect x="126" y="148" width="348" height="504" rx="22" fill="${mat}" />
+        <rect x="156" y="178" width="288" height="444" rx="16" fill="${artBackground}" />
+        <g transform="translate(0,0)">
+          ${detail}
+        </g>
+      </g>
+    </svg>
+  `;
+
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
+function createPerspectiveMockup({
+  idSuffix = "perspective",
+  backgroundTop = "#f6f2ea",
+  backgroundBottom = "#e7ded2",
+  surface = "#bfa68f",
+  surfaceShadow = "#9f876f",
+  printHighlight = "#ffffff",
+  printShadow = "#d3c5b3",
+  accent = "#f8efe2",
+  detail = ""
+} = {}) {
+  const backgroundGradientId = `perspBackground-${idSuffix}`;
+  const surfaceGradientId = `perspSurface-${idSuffix}`;
+  const printGradientId = `perspPrint-${idSuffix}`;
+  const glossGradientId = `perspGloss-${idSuffix}`;
+  const printClipId = `perspClip-${idSuffix}`;
+
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200">
+      <defs>
+        <linearGradient id="${backgroundGradientId}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="${backgroundTop}" />
+          <stop offset="1" stop-color="${backgroundBottom}" />
+        </linearGradient>
+        <linearGradient id="${surfaceGradientId}" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="${surface}" />
+          <stop offset="1" stop-color="${surfaceShadow}" />
+        </linearGradient>
+        <linearGradient id="${printGradientId}" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="${printHighlight}" />
+          <stop offset="1" stop-color="${printShadow}" />
+        </linearGradient>
+        <linearGradient id="${glossGradientId}" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="rgba(255,255,255,0.45)" />
+          <stop offset="0.6" stop-color="rgba(255,255,255,0.05)" />
+          <stop offset="1" stop-color="rgba(255,255,255,0)" />
+        </linearGradient>
+        <clipPath id="${printClipId}">
+          <polygon points="360 260 1180 160 1280 580 470 720" />
+        </clipPath>
+      </defs>
+
+      <rect width="1600" height="1200" fill="url(#${backgroundGradientId})" />
+
+      <path d="M0 640 Q800 700 1600 520 L1600 1200 H0 Z" fill="url(#${surfaceGradientId})" />
+      <path d="M220 880 C520 940 1120 910 1400 780 L1420 840 C1130 980 490 1010 200 920 Z" fill="rgba(0,0,0,0.18)" opacity="0.25" />
+
+      <g>
+        <polygon points="360 260 1180 160 1280 580 470 720" fill="url(#${printGradientId})" />
+        <polygon points="360 260 1180 160 1280 580 470 720" fill="url(#${glossGradientId})" opacity="0.45" />
+        <polygon points="360 260 1180 160 1280 580 470 720" fill="url(#${glossGradientId})" opacity="0.2" transform="translate(40, -20)" />
+        <polygon points="360 260 1180 160 1280 580 470 720" fill="rgba(0,0,0,0.18)" opacity="0.12" transform="translate(24, 90)" />
+        <polygon points="360 260 1180 160 1188 194 368 294" fill="rgba(0,0,0,0.18)" opacity="0.2" />
+        <polygon points="470 720 1280 580 1272 544 462 684" fill="rgba(0,0,0,0.12)" />
+      </g>
+
+      <g clip-path="url(#${printClipId})">
+        <rect x="320" y="180" width="960" height="740" fill="${accent}" />
+        <g transform="translate(470,260) scale(1.1)">
+          ${detail}
+        </g>
+      </g>
+
+      <g opacity="0.55">
+        <path d="M300 260 L380 262 L420 470 L340 466 Z" fill="rgba(0,0,0,0.12)" />
+        <path d="M1180 160 L1220 162 L1308 568 L1266 566 Z" fill="rgba(0,0,0,0.12)" />
+      </g>
+
+      <path d="M720 880 Q960 820 1260 760" stroke="rgba(0,0,0,0.08)" stroke-width="32" stroke-linecap="round" />
+      <path d="M300 940 Q820 1000 1400 860" stroke="rgba(0,0,0,0.08)" stroke-width="54" stroke-linecap="round" />
+    </svg>
+  `;
+
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
+const PRODIGI_FRAME_PRICE_MAP = PRODIGI_FRAMES.reduce((map, frame) => {
+  map[frame.key] = frame.priceMultiplier;
+  return map;
+}, {});
+
+const PRODIGI_VARIANTS = [
+  { size: "A4 (21 x 29.7 cm)", sku: "GLOBAL-BFP-12X16", frames: ["natural", "white"], basePrice: 35 },
+  { size: "A3 (29.7 x 42 cm)", sku: "GLOBAL-BFP-16X20", frames: ["natural", "white"], basePrice: 45 },
+  { size: "A2 (42 x 59.4 cm)", sku: "GLOBAL-BFP-20X28", frames: ["natural", "white"], basePrice: 55 },
+  { size: "A1 (59.4 x 84.1 cm)", sku: "GLOBAL-BFP-24X32", frames: ["natural", "white"], basePrice: 65 }
+];
+
+const PRODIGI_SIZE_OPTIONS = PRODIGI_VARIANTS.map((variant) => variant.size);
+
+const PRODIGI_SKU_MATRIX = PRODIGI_VARIANTS.reduce((matrix, variant) => {
+  matrix[variant.size] = variant.frames.reduce((frameMap, frameKey) => {
+    frameMap[frameKey] = variant.sku;
+    return frameMap;
+  }, {});
+  return matrix;
+}, {});
+
+const PRODIGI_VARIANT_PRICE_MAP = PRODIGI_VARIANTS.reduce((priceMap, variant) => {
+  priceMap[variant.size] = variant.basePrice;
+  return priceMap;
+}, {});
+
+const PRODIGI_MIN_VARIANT_PRICE = Math.min(...PRODIGI_VARIANTS.map((variant) => variant.basePrice));
+
 const siteConfig = {
   bannerMessages: [
-    "Free UK delivery on orders over £75",
+    "Free UK delivery on orders over Â£75",
     "New: Spring colour stories just dropped",
     "Save 10% when you join the Artiq Insider"
   ],
@@ -30,13 +207,18 @@ const siteConfig = {
         "Abstract",
         "Architecture",
         "Botanical",
-        "Cityscapes",
         "Coastal",
+        "Film",
         "Figurative",
+        "Kids",
+        "Kitchen",
         "Landscapes",
         "Minimalist",
+        "Nature",
         "Photography",
         "Pop Art",
+        "Sports",
+        "Travel",
         "Typography",
         "Vintage"
       ]
@@ -66,157 +248,298 @@ const siteConfig = {
     price: {
       label: "Price",
       links: [
-        "Under £25",
-        "£25 - £50",
-        "£50 - £100",
-        "£100 - £150",
-        "£150 - £200",
-        "Over £200"
+        "Under Â£25",
+        "Â£25 - Â£50",
+        "Â£50 - Â£100",
+        "Â£100 - Â£150",
+        "Â£150 - Â£200",
+        "Over Â£200"
       ]
     }
   },
   categories: {
     main: [
-      { key: "abstract", title: "Abstract", description: "Soft gradients and bold shapes", image: "abstract" },
-      { key: "landscapes", title: "Landscapes", description: "Scenes from around the world", image: "landscapes" },
-      { key: "photography", title: "Photography", description: "Captured moments", image: "photography" },
-      { key: "botanical", title: "Botanical", description: "Flourishing flora", image: "botanical" },
-      { key: "architecture", title: "Architecture", description: "Structural marvels", image: "architecture" },
-      { key: "coastal", title: "Coastal", description: "Ocean inspired", image: "coastal" },
-      { key: "figurative", title: "Figurative", description: "Human form", image: "figurative" },
-      { key: "pop-art", title: "Pop Art", description: "Vibrant nostalgia", image: "pop" }
+      { key: "abstract", title: "Abstract", description: "Soft gradients and bold shapes", image: "assets/images/categories/abstract.webp" },
+      { key: "film", title: "Film", description: "Cinematic favourites", image: "assets/images/categories/film.webp" },
+      { key: "kitchen", title: "Kitchen", description: "Culinary warmth for home", image: "assets/images/categories/kitchen.webp" },
+      { key: "minimalist", title: "Minimalist", description: "Clean lines for calm spaces", image: "assets/images/categories/minimalist.webp" },
+      { key: "nature", title: "Nature", description: "Calming organic scenery", image: "assets/images/categories/nature.webp" },
+      { key: "pop-art", title: "Pop Art", description: "Vibrant nostalgia", image: "assets/images/categories/pop-art.webp" },
+      { key: "sports", title: "Sports", description: "Dynamic sporting icons", image: "assets/images/categories/sports.webp" },
+      { key: "travel", title: "Travel", description: "Discover global landmarks", image: "assets/images/categories/travel.webp" }
     ],
     niche: [
-      { key: "minimalist", title: "Minimalist", description: "Clean lines", image: "minimalist" },
+      { key: "architecture", title: "Architecture", description: "Structural marvels", image: "architecture" },
+      { key: "botanical", title: "Botanical", description: "Flourishing flora", image: "botanical" },
+      { key: "coastal", title: "Coastal", description: "Ocean inspired", image: "coastal" },
+      { key: "figurative", title: "Figurative", description: "Human form", image: "figurative" },
+      { key: "kids", title: "Kids", description: "Playful prints", image: "kids" },
+      { key: "landscapes", title: "Landscapes", description: "Scenes from around the world", image: "landscapes" },
+      { key: "photography", title: "Photography", description: "Captured moments", image: "photography" },
       { key: "typography", title: "Typography", description: "Statement words", image: "type" },
-      { key: "vintage", title: "Vintage", description: "Retro charm", image: "vintage" },
-      { key: "kids", title: "Kids", description: "Playful prints", image: "kids" }
+      { key: "vintage", title: "Vintage", description: "Retro charm", image: "vintage" }
     ]
   },
   products: [
     {
-      id: "aurora-haze",
-      title: "Aurora Haze",
-      price: 45,
-      category: "abstract",
-      imageKey: "abstract",
+      id: "women-in-black",
+      title: "Women in Black",
+      artworkUrl: "assets/images/women-in-black.jpg",
+      basePrice: 25,
+      category: "film",
+      imageKey: "assets/images/women-in-black-decoration-wall-art.png",
       frameImages: {
-        natural: "abstract-natural",
-        black: "abstract-black",
-        white: "abstract-white"
+        default: "assets/images/women-in-black-decoration-wall-art.png",
+        black: "assets/images/women-in-black-decoration-wall-art.png",
+        white: "assets/images/women-in-black-luxury-frame.png",
+        natural: "assets/images/women-in-black-cream-brown.png"
+      },
+      prodigiSkus: PRODIGI_SKU_MATRIX,
+      assetUrl: "assets/images/women-in-black.jpg",
+      lifestyleGallery: [
+      {
+        src: "women-in-black-desk-angle",
+        title: "Studio desk view",
+        caption: "Displayed across a flat-lay desk with soft stationery shadows."
+      },
+      {
+        src: "women-in-black-close-detail",
+        title: "Foil detail",
+        caption: "Highlighting the fine line work and satin finish up close."
+      },
+      {
+        src: "women-in-black-roll",
+        title: "Ready to gift",
+        caption: "Rolled with artisan kraft paper wrap and foil accented seal."
       }
+    ],
+      description: [
+        "Hand-inked illustration capturing a cinematic beauty ritual",
+        "Printed on archival cotton paper with deep matte blacks",
+        "Choose from matte black, gallery white, or natural oak frames",
+        "UV-protective acrylic preserves color and line work",
+        "Finished with artisan corners and hanging hardware included",
+        "Carbon-neutral production and plastic-free packaging"
+      ]
     },
     {
       id: "dune-silhouettes",
-      title: "Dune Silhouettes",
-      price: 55,
-      category: "landscapes",
-      imageKey: "landscapes"
+      title: "Symmetrical Architecture",
+      artworkUrl: "assets/images/dune-symmetrical-black.png",
+      basePrice: 30,
+      category: "travel",
+      imageKey: "assets/images/dune-symmetrical-black.png",
+      frameImages: {
+        default: "assets/images/dune-symmetrical-black.png",
+        black: "assets/images/dune-symmetrical-black.png",
+        white: "assets/images/dune-symmetrical-white.png",
+        natural: "assets/images/dune-symmetrical-natural.png"
+      },
+      prodigiSkus: PRODIGI_SKU_MATRIX,
+      assetUrl: "server/public/images/prints/Symmetrical Architecture/symmetrical architecture base file.jpg",
+      description: [
+        "Captured during golden hour in the Sahara Desert",
+        "High-resolution digital print on premium matte paper",
+        "Natural oak frame with protective UV acrylic glazing",
+        "Fade-resistant inks with 100+ year color stability",
+        "Eco-friendly packaging made from recycled materials",
+        "Express shipping available worldwide"
+      ]
     },
     {
-      id: "botanical-study",
-      title: "Botanical Study",
-      price: 35,
-      category: "botanical",
-      imageKey: "botanical"
+      id: "athletic-moments",
+      title: "French Beach",
+      artworkUrl: "assets/images/french-beach-black.png",
+      basePrice: 28,
+      category: "coastal",
+      imageKey: "assets/images/french-beach-black.png",
+      frameImages: {
+        default: "assets/images/french-beach-black.png",
+        black: "assets/images/french-beach-black.png",
+        white: "assets/images/french-beach-white.png",
+        natural: "assets/images/french-beach-natural.png"
+      },
+      prodigiSkus: PRODIGI_SKU_MATRIX,
+      assetUrl: "server/public/images/prints/French Beach/French Beach - Black.png",
+      description: [
+        "Serene shoreline photography captured along France's Atlantic coast",
+        "Soft pastel palette pairs beautifully with coastal interiors",
+        "Available framed in matte black, gallery white or natural oak",
+        "Printed on archival cotton paper for museum-quality longevity",
+        "Mounted with acid-free mats and UV-protective glazing",
+        "Produced on demand with carbon neutral delivery"
+      ]
     },
     {
-      id: "city-dusk",
-      title: "City Dusk",
-      price: 65,
-      category: "cityscapes",
-      imageKey: "city"
+      id: "japanese-wave-art",
+      title: "Japanese Wave Art",
+      artworkUrl: "assets/images/japanese-wave-black.png",
+      basePrice: 30,
+      category: "abstract",
+      imageKey: "assets/images/japanese-wave-black.png",
+      frameImages: {
+        default: "assets/images/japanese-wave-black.png",
+        black: "assets/images/japanese-wave-black.png",
+        white: "assets/images/japanese-wave-white.png",
+        natural: "assets/images/japanese-wave-natural.png"
+      },
+      prodigiSkus: PRODIGI_SKU_MATRIX,
+      assetUrl: "server/public/images/prints/Japanese Wave Art/Japanese Wave Art - Black.png",
+      description: [
+        "Modern reinterpretation of Hokusai-inspired waves with teal gradients",
+        "Balancing movement and negative space for minimalist interiors",
+        "Framing options in matte black, gallery white, or natural oak",
+        "Printed on archival fine art paper with pigment-rich inks",
+        "UV-protected glazing keeps colours vivid in bright rooms",
+        "Produced on demand with carbon-neutral global fulfillment"
+      ]
+    },
+    {
+      id: "man-of-colour",
+      title: "Man of Colour",
+      artworkUrl: "assets/images/man-of-colour-black.png",
+      basePrice: 35,
+      priceOverrides: {
+        "A2 (42 x 59.4 cm)": 1.99
+      },
+      category: "figurative",
+      imageKey: "assets/images/man-of-colour-black.png",
+      frameImages: {
+        default: "assets/images/man-of-colour-natural.png",
+        white: "assets/images/man-of-colour-white.png",
+        natural: "assets/images/man-of-colour-natural.png"
+      },
+      prodigiSkus: PRODIGI_SKU_MATRIX,
+      assetUrl: "server/public/images/prints/Colour of Man/Colour of Man source file.png",
+      description: [
+        "Bold figurative portrait celebrating vibrant colour blocking",
+        "Richly saturated pigments printed on archival cotton rag",
+        "Available framed in matte black, gallery white or natural oak",
+        "Framed with UV-protective acrylic to preserve tonal depth",
+        "Includes hanging hardware and artist provenance card",
+        "Hand finished to order with carbon neutral delivery"
+      ]
     },
     {
       id: "cobalt-tide",
       title: "Cobalt Tide",
-      price: 48,
-      category: "coastal",
-      imageKey: "coastal"
+      basePrice: 28,
+      category: "nature",
+      imageKey: "coastal",
+      prodigiSkus: PRODIGI_SKU_MATRIX,
+      assetUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&h=1600&fit=crop&crop=center",
+      description: [
+        "Dramatic seascape from the Cornish coastline",
+        "Vibrant cobalt blues printed on metallic paper",
+        "Natural driftwood frame with sea glass accents",
+        "Water-resistant finish for bathroom or kitchen display",
+        "Artist's signature and edition number included",
+        "Packaged in eco-friendly materials"
+      ]
+    },
+    {
+      id: "culinary-still",
+      title: "Culinary Still Life",
+      artworkUrl: "assets/images/categories/kitchen.webp",
+      basePrice: 24,
+      category: "kitchen",
+      imageKey: "assets/images/categories/kitchen.webp",
+      frameImages: {
+        default: "assets/images/categories/kitchen.webp",
+        black: "assets/images/categories/kitchen.webp",
+        white: "assets/images/categories/kitchen.webp",
+        natural: "assets/images/categories/kitchen.webp"
+      },
+      prodigiSkus: PRODIGI_SKU_MATRIX,
+      assetUrl: "assets/images/categories/kitchen.webp",
+      description: [
+        "Warm farmhouse palette featuring seasonal produce and botanicals",
+        "Adds texture to kitchens, dining rooms and pantry corners",
+        "Printed using food-safe, low VOC inks for culinary spaces",
+        "Choice of matte white, oak or black frame finishes",
+        "Includes recipe card pairing and styling tips",
+        "Shipped in protective, plastic-free packaging"
+      ]
+    },
+    {
+      id: "pop-legends",
+      title: "Pop Legends Gallery",
+      artworkUrl: "assets/images/categories/pop-art.webp",
+      basePrice: 29,
+      category: "pop-art",
+      imageKey: "assets/images/categories/pop-art.webp",
+      frameImages: {
+        default: "assets/images/categories/pop-art.webp",
+        black: "assets/images/categories/pop-art.webp",
+        white: "assets/images/categories/pop-art.webp",
+        natural: "assets/images/categories/pop-art.webp"
+      },
+      prodigiSkus: PRODIGI_SKU_MATRIX,
+      assetUrl: "assets/images/categories/pop-art.webp",
+      description: [
+        "Bold comic-inspired art featuring cult movie and gaming icons",
+        "High-impact hues printed with ultra-vibrant pigment inks",
+        "Available framed in matte black, crisp white or natural oak",
+        "Ideal for media rooms, teenage bedrooms and creative studios",
+        "Each print produced on demand to reduce waste",
+        "Delivered ready to hang with wall-friendly fittings"
+      ]
     },
     {
       id: "midnight-forms",
       title: "Midnight Forms",
-      price: 52,
+      basePrice: 26,
       category: "minimalist",
-      imageKey: "minimalist"
-    },
-    {
-      id: "sunrise-portrait",
-      title: "Sunrise Portrait",
-      price: 60,
-      category: "figurative",
-      imageKey: "figurative"
-    },
-    {
-      id: "retro-pulse",
-      title: "Retro Pulse",
-      price: 40,
-      category: "pop-art",
-      imageKey: "pop"
-    },
-    {
-      id: "copper-arch",
-      title: "Copper Arch",
-      price: 38,
-      category: "architecture",
-      imageKey: "architecture"
-    },
-    {
-      id: "riverbend",
-      title: "Riverbend",
-      price: 44,
-      category: "landscapes",
-      imageKey: "landscapes"
-    },
-    {
-      id: "linen-lines",
-      title: "Linen Lines",
-      price: 32,
-      category: "minimalist",
-      imageKey: "minimalist"
-    },
-    {
-      id: "studio-light",
-      title: "Studio Light",
-      price: 58,
-      category: "photography",
-      imageKey: "photography"
+      imageKey: "minimalist",
+      prodigiSkus: PRODIGI_SKU_MATRIX,
+      assetUrl: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=1200&h=1600&fit=crop&crop=center",
+      description: [
+        "Abstract geometric composition in midnight tones",
+        "Minimalist design perfect for modern interiors",
+        "Floating frame with gallery-quality mounting",
+        "Printed on heavyweight fine art paper",
+        "Limited edition of 100 prints worldwide",
+        "Comes with artist's certificate of authenticity"
+      ]
     }
   ],
   productDetail: {
-    id: "aurora-haze",
-    title: "Aurora Haze",
-    priceRange: "£23.95 - £200.00",
+    id: "women-in-black",
+    title: "Women in Black",
+    artworkUrl: "assets/images/women-in-black.jpg",
+    priceRange: "\u00a335.00 - \u00a365.00",
     description: [
-      "Feature a…. Premium archival giclée print",
-      "Feature b…. Sustainably sourced frames",
-      "Feature c…. Hand finished in the UK",
-      "Feature d…. 12 colour pigment inks",
-      "Feature e…. Certified carbon neutral fulfilment",
-      "Feature f…. Protected by UV acrylic glazing"
+      "Feature aâ€¦. Premium archival giclÃ©e print",
+      "Feature bâ€¦. Sustainably sourced frames",
+      "Feature câ€¦. Hand finished in the UK",
+      "Feature dâ€¦. 12 colour pigment inks",
+      "Feature eâ€¦. Certified carbon neutral fulfilment",
+      "Feature fâ€¦. Protected by UV acrylic glazing"
     ],
-    frames: [
-      { value: "natural", label: "Natural Oak" },
-      { value: "black", label: "Matte Black" },
-      { value: "white", label: "Gallery White" },
-      { value: "walnut", label: "Rich Walnut" },
-      { value: "gold", label: "Brushed Gold" },
-      { value: "silver", label: "Polished Silver" }
-    ],
-    sizes: [
-      "A4 (21 x 29.7 cm)",
-      "A3 (29.7 x 42 cm)",
-      "A2 (42 x 59.4 cm)",
-      "A1 (59.4 x 84.1 cm)",
-      "40 x 40 cm",
-      "60 x 60 cm"
+    frames: PRODIGI_FRAMES.map(({ key, label }) => ({ value: key, label })),
+    sizes: PRODIGI_SIZE_OPTIONS,
+    lifestyleGallery: [
+      {
+        src: "women-in-black-desk-angle",
+        title: "Studio desk view",
+        caption: "Displayed across a flat-lay desk with soft stationery shadows."
+      },
+      {
+        src: "women-in-black-close-detail",
+        title: "Foil detail",
+        caption: "Highlighting the fine line work and satin finish up close."
+      },
+      {
+        src: "women-in-black-roll",
+        title: "Ready to gift",
+        caption: "Rolled with artisan kraft paper wrap and foil accented seal."
+      }
     ],
     gallery: [
-      { src: "abstract", alt: "Aurora Haze print" },
-      { src: "abstract-natural", alt: "Aurora Haze with natural oak frame" },
-      { src: "abstract-black", alt: "Aurora Haze with black frame" },
-      { src: "abstract-white", alt: "Aurora Haze with white frame" }
+      { src: "assets/images/women-in-black.jpg", alt: "Women in Black illustration" },
+      { src: "women-in-black-natural", alt: "Women in Black in natural oak frame" },
+      { src: "women-in-black-black", alt: "Women in Black in matte black frame" },
+      { src: "women-in-black-white", alt: "Women in Black in gallery white frame" }
     ]
   },
   testimonials: [
@@ -238,7 +561,28 @@ const siteConfig = {
   ]
 };
 
+const WOMEN_IN_BLACK_DETAIL = `
+      <path d="M288 238c36-36 108-54 156 4-6 60-48 84-78 90 18 10 42 12 54 10-16 30-56 38-94 22-26-12-38-36-42-58-24 10-46 16-62 16 6-38 14-64 66-84z" fill="#161518" />
+      <path d="M330 250c30 0 54 28 54 84s-40 92-76 92c-26 0-62-20-70-68 28-6 50-26 62-52-16 10-32 16-46 18 2-34 34-74 76-74z" fill="#f7ece5" />
+      <path d="M356 318c14-6 34-6 42 8-16 12-34 10-48 2 2-4 4-8 6-10z" fill="#161518" />
+      <path d="M360 360c12 0 22 6 26 12-8 12-24 18-42 18-12 0-22-4-30-10 8-10 26-20 46-20z" fill="#d82232" />
+      <circle cx="414" cy="380" r="18" fill="#d82232" />
+      <circle cx="414" cy="412" r="12" fill="#c41728" />
+      <path d="M292 432c22 6 38 18 46 32 12 26 6 46-16 62-26 18-66 18-90-12 16-4 34-16 48-32-18 12-36 18-50 18 10-30 26-62 62-68z" fill="#1c1b1e" />
+      <path d="M238 426c18-10 44-18 70-14 6 16 10 34 8 46-22 10-44 8-60 4 12 6 26 8 38 6-12 22-40 36-74 32-18-2-38-12-56-22 24-20 56-38 74-52z" fill="#1b191c" />
+      <path d="M208 434c8-6 18-10 26-12-2 10-2 22 2 34-10 0-20-4-28-10z" fill="#f2e3db" />
+      <path d="M200 430c18-14 40-22 60-26 4 4 6 10 6 16-20 6-40 12-56 18-4-2-8-4-10-8z" fill="#f2e3db" />
+      <path d="M204 430c-8-8-10-16-2-24 18-4 36-8 52-12 4 4 8 8 10 12-18 6-38 16-60 24z" fill="#d82232" />
+      <path d="M268 404c10-8 22-12 32-12 18 0 40 16 54 44 20 40 22 96-4 138-46 20-92 12-132-16-22-16-36-38-42-58 26-12 62-36 80-72-14 16-32 28-48 34-2-30 10-58 60-58z" fill="#141217" />
+      <path d="M270 480c48-18 128-54 182-18 14 56-4 104-48 138-46 36-110 42-156 12-36-22-56-58-56-102 0-14 2-26 4-36 22 14 46 14 74 6z" fill="#0f0e11" />
+      <path d="M190 424c-10 10-10 22 2 32 12 10 30 12 44 8" fill="none" stroke="#111015" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M298 340c-10 18-28 32-52 38" fill="none" stroke="#111015" stroke-width="6" stroke-linecap="round" />
+      <path d="M206 428c22-12 46-20 68-24" fill="none" stroke="#1a1a1d" stroke-width="4" stroke-linecap="round" />
+      <path d="M366 362c10 4 26 4 40 0" fill="none" stroke="#861020" stroke-width="4" stroke-linecap="round" />
+      <path d="M366 326c10 2 22 0 32-2" fill="none" stroke="#09080a" stroke-width="6" stroke-linecap="round" />
+`;
 const placeholderImages = {
+
   abstract: createFramedArtwork({
     background: '#f6f1f0',
     frame: '#1f1f1f',
@@ -279,6 +623,111 @@ const placeholderImages = {
       <circle cx="360" cy="400" r="98" fill="#ffd166" opacity="0.7" />
       <path d="M210 470 C260 420 320 520 390 480" stroke="#073b4c" stroke-width="14" stroke-linecap="round" fill="none" />
     `
+  }),
+  'women-in-black-decoration-wall-art': createWallMockup({
+    idSuffix: 'wib-decoration',
+    detail: WOMEN_IN_BLACK_DETAIL,
+    wallTop: '#f5f2ef',
+    wallBottom: '#e6dbd2',
+    floor: '#d3c1b4',
+    frameLight: '#5a4638',
+    frameAccent: '#3a2a21',
+    frameDark: '#241712',
+    mat: '#ffffff',
+    artBackground: '#ffffff'
+  }),
+  'women-in-black-luxury-frame': createWallMockup({
+    idSuffix: 'wib-luxury',
+    detail: WOMEN_IN_BLACK_DETAIL,
+    wallTop: '#fbfbfb',
+    wallBottom: '#ede9e4',
+    floor: '#d9d5ce',
+    frameLight: '#f8f8f5',
+    frameAccent: '#e3e1dd',
+    frameDark: '#cbc8c3',
+    mat: '#ffffff',
+    artBackground: '#ffffff'
+  }),
+  'women-in-black-cream-brown': createWallMockup({
+    idSuffix: 'wib-cream-brown',
+    detail: WOMEN_IN_BLACK_DETAIL,
+    wallTop: '#f4ede5',
+    wallBottom: '#e2d0c0',
+    floor: '#cdb49f',
+    frameLight: '#d7b890',
+    frameAccent: '#bb915f',
+    frameDark: '#8a623a',
+    mat: '#ffffff',
+    artBackground: '#ffffff'
+  }),
+  'women-in-black': createWallMockup({
+    idSuffix: 'wib-room',
+    detail: WOMEN_IN_BLACK_DETAIL,
+    frameLight: '#ceb07d',
+    frameAccent: '#b68a4d',
+    frameDark: '#947149'
+  }),
+  'women-in-black-natural': createWallMockup({
+    idSuffix: 'wib-natural',
+    detail: WOMEN_IN_BLACK_DETAIL,
+    frameLight: '#d6b789',
+    frameAccent: '#bf9558',
+    frameDark: '#8b6535'
+  }),
+  'women-in-black-black': createWallMockup({
+    idSuffix: 'wib-black',
+    detail: WOMEN_IN_BLACK_DETAIL,
+    frameLight: '#4b4b4f',
+    frameAccent: '#2d2d31',
+    frameDark: '#0e0e10',
+    mat: '#f6f4f2',
+    artBackground: '#ffffff',
+    wallTop: '#f1efec',
+    wallBottom: '#e2d8cf'
+  }),
+  'women-in-black-white': createWallMockup({
+    idSuffix: 'wib-white',
+    detail: WOMEN_IN_BLACK_DETAIL,
+    frameLight: '#f9f6f2',
+    frameAccent: '#ebe3da',
+    frameDark: '#cfc6bb',
+    mat: '#ffffff',
+    artBackground: '#ffffff',
+    wallTop: '#f4f1ee',
+    wallBottom: '#e8ddd4'
+  }),
+  'women-in-black-desk-angle': createPerspectiveMockup({
+    idSuffix: 'wib-desk',
+    backgroundTop: '#f5f0ea',
+    backgroundBottom: '#e3d8cb',
+    surface: '#bfa68f',
+    surfaceShadow: '#957f6a',
+    printHighlight: '#fdf7ef',
+    printShadow: '#d4c2aa',
+    accent: '#fefaf6',
+    detail: WOMEN_IN_BLACK_DETAIL
+  }),
+  'women-in-black-close-detail': createPerspectiveMockup({
+    idSuffix: 'wib-detail',
+    backgroundTop: '#f6f2eb',
+    backgroundBottom: '#ece1d7',
+    surface: '#d8c4b2',
+    surfaceShadow: '#b59d86',
+    printHighlight: '#ffffff',
+    printShadow: '#d3c7ba',
+    accent: '#fbf4ea',
+    detail: WOMEN_IN_BLACK_DETAIL
+  }),
+  'women-in-black-roll': createPerspectiveMockup({
+    idSuffix: 'wib-roll',
+    backgroundTop: '#f4eee7',
+    backgroundBottom: '#e1d5c8',
+    surface: '#c6ad96',
+    surfaceShadow: '#a48970',
+    printHighlight: '#fffdf7',
+    printShadow: '#d9c8b6',
+    accent: '#fefaf4',
+    detail: WOMEN_IN_BLACK_DETAIL
   }),
   landscapes: createFramedArtwork({
     background: '#eef3f7',
@@ -445,3 +894,20 @@ const placeholderImages = {
     `
   })
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
