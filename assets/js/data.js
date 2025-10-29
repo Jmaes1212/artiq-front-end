@@ -400,7 +400,8 @@ const siteConfig = {
       artworkUrl: "assets/images/man-of-colour-black.png",
       basePrice: 35,
       priceOverrides: {
-        "A2 (42 x 59.4 cm)": 1.99
+        "A2 (42 x 59.4 cm)": 1.99,
+        "A4 (21 x 29.7 cm)": 1.99
       },
       category: "figurative",
       imageKey: "assets/images/man-of-colour-black.png",
@@ -410,7 +411,7 @@ const siteConfig = {
         natural: "assets/images/man-of-colour-natural.png"
       },
       prodigiSkus: PRODIGI_SKU_MATRIX,
-      assetUrl: "server/public/images/prints/Colour of Man/Colour of Man source file.png",
+      assetUrl: "assets/images/prints/man-of-colour.png",
       description: [
         "Bold figurative portrait celebrating vibrant colour blocking",
         "Richly saturated pigments printed on archival cotton rag",
